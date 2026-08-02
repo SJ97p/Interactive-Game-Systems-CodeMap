@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Unity 제작 도구, BLE 장치 진단, MediaPipe 연동과 게임 서버 통합 사례를 정리한 문제 해결 포트폴리오" />
+  <title>Interactive Game Systems Code Map</title>
+  <link rel="stylesheet" href="style.css?v=20260802" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.6/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">System Integration Portfolio</p>
+      <h1>Interactive Game Systems Code Map</h1>
+    </div>
+    <nav class="toplinks" aria-label="External links">
+      <a href="docs/index.md">Documents</a>
+      <a href="https://github.com/SJ97p/Interactive-Game-Systems-CodeMap" target="_blank" rel="noreferrer">GitHub</a>
+      <button id="theme-toggle" type="button" title="테마 전환">Black</button>
+    </nav>
+  </header>
+
+  <main id="layout" class="layout">
+    <aside class="sidebar">
+      <div class="panel-head">
+        <h2>Explorer</h2>
+        <label class="explorer-search" for="explorer-search">
+          <span class="sr-only">모듈 검색</span>
+          <input id="explorer-search" type="search" placeholder="모듈 검색..." autocomplete="off" />
+        </label>
+      </div>
+      <div id="tree" class="tree"></div>
+    </aside>
+
+    <section class="main-panel">
+      <div class="panel-head graph-head">
+        <div>
+          <h2 id="node-title">Overview</h2>
+          <p id="node-summary"></p>
+        </div>
+        <div class="graph-tools">
+          <button id="nav-back" class="back-button" type="button" title="이전 화면" disabled>Back</button>
+          <div class="zoom-controls" aria-label="그래프 확대 및 축소">
+            <button id="zoom-out" type="button" title="축소">-</button>
+            <button id="zoom-reset" type="button" title="배율 초기화">100%</button>
+            <button id="zoom-in" type="button" title="확대">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="graph-wrap" class="graph-wrap">
+        <div id="graph" class="mermaid"></div>
+      </div>
+
+      <section id="detail-grid" class="detail-grid">
+        <article class="detail-card">
+          <h3>필요성</h3>
+          <p id="intent"></p>
+        </article>
+        <article class="detail-card">
+          <h3>기존 문제</h3>
+          <p id="issue"></p>
+        </article>
+        <article class="detail-card">
+          <h3>해결 과정</h3>
+          <p id="final"></p>
+        </article>
+        <article class="detail-card">
+          <h3>결과와 공개 경계</h3>
+          <p id="next"></p>
+        </article>
+      </section>
+
+      <section id="script-section" class="script-section">
+        <div class="section-head">
+          <h2>Public Design Notes</h2>
+          <p>회사 원본 코드 대신 공개 가능한 설계 설명과 일반화된 의사 코드를 제공합니다.</p>
+        </div>
+        <div id="script-list" class="script-list"></div>
+      </section>
+
+      <section id="evidence-section" class="evidence-section" hidden>
+        <div class="section-head">
+          <h2>Evidence</h2>
+          <p>공개 허가를 확인했거나 독립적으로 다시 제작한 자료만 표시합니다.</p>
+        </div>
+        <div id="evidence" class="evidence-grid"></div>
+      </section>
+    </section>
+
+    <div id="code-resizer" class="code-resizer" role="separator" aria-label="코드 미리보기 너비 조절" aria-orientation="vertical" tabindex="0" title="드래그하거나 더블 클릭해 너비 조절"></div>
+
+    <aside id="code-panel" class="code-panel">
+      <div class="panel-head">
+        <div>
+          <h2>Design Preview</h2>
+          <p id="code-path"></p>
+        </div>
+      </div>
+      <div id="code-actions" class="code-actions"></div>
+      <pre id="code-preview" class="code-preview"><code>왼쪽 Explorer 또는 그래프에서 시스템을 선택하세요.</code></pre>
+    </aside>
+  </main>
+
+  <dialog id="media-modal" class="media-modal">
+    <button id="modal-close" class="modal-close" type="button">Close</button>
+    <img id="modal-image" alt="" />
+    <p id="modal-caption"></p>
+  </dialog>
+
+  <script src="app.js?v=20260802"></script>
+</body>
+</html>
+

@@ -8,7 +8,7 @@
 
 ## Current Public Scope
 
-현재 공개 후보는 본인이 해결한 문제와 기여 범위를 서술한 문서뿐입니다. 회사 원본 코드, 원본 이미지와 실행 파일은 복사하지 않았습니다.
+현재 공개 후보는 본인이 해결한 문제와 기여 범위를 서술한 문서와 정적 Code Map입니다. Code Map의 설계 노트와 의사 코드는 공개를 위해 새로 작성했으며, 회사 원본 코드, 원본 이미지와 실행 파일은 복사하지 않았습니다.
 
 ## Known Sensitive Material in Original Projects
 

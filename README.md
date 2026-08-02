@@ -6,6 +6,25 @@
 
 > 현재 저장소는 문서화 단계입니다. 공개용 데모와 이미지는 원본 회사 자료를 복사하지 않고 별도로 제작할 예정입니다.
 
+## Interactive Code Map
+
+저장소 루트의 `index.html`은 [Shield & Shot Code Map](https://github.com/SJ97p/Shield-Shot-CodeMap)에서 구축한 디자인과 탐색 방식을 재사용한 정적 포트폴리오입니다.
+
+- Explorer에서 사례와 세부 시스템 탐색
+- Mermaid 기반 시스템 흐름과 노드 이동
+- 필요성, 기존 문제, 해결 과정, 결과 및 공개 경계 비교
+- 회사 원본 코드 대신 공개 가능한 설계 노트와 의사 코드 확인
+- 검색, 뒤로가기, 그래프 확대·축소, 테마 전환과 코드 패널 크기 조절
+
+현재 저장소는 Private이므로 무료 GitHub Pages를 사용할 수 없습니다. 로컬에서는 다음 명령으로 확인할 수 있습니다.
+
+```powershell
+Set-Location -LiteralPath 'E:\Unity Project\Interactive-Game-Systems-CodeMap'
+python -m http.server 4173
+```
+
+그다음 브라우저에서 `http://127.0.0.1:4173`을 엽니다. 공개 검토가 끝난 뒤 저장소를 Public으로 전환하면 루트의 정적 사이트를 GitHub Pages로 배포할 수 있습니다.
+
 ## Portfolio Summary
 
 | Case Study | Problem | My Contribution | Status |
