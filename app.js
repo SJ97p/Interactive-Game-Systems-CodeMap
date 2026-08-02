@@ -355,7 +355,7 @@ const navStack = [];
 let currentNodeId = "overview";
 let treeSearchQuery = "";
 const defaultGraphScale = 1;
-const graphRenderScale = 0.6;
+let graphRenderScale = 0.6;
 let graphScale = defaultGraphScale;
 let graphBaseSize = { width: 760, height: 420 };
 let currentNotes = [];
@@ -495,11 +495,22 @@ async function renderGraph(node) {
     await mermaid.run({ nodes: [els.graph] });
     attachGraphClicks(node);
     captureGraphBaseSize();
+    graphRenderScale = getGraphRenderScale(node);
     setGraphScale(defaultGraphScale);
   } catch (error) {
     els.graph.textContent = "그래프를 렌더링하지 못했습니다.";
     console.error(error);
   }
+}
+
+function getGraphRenderScale(node) {
+  if (node === nodes.overview) return 0.6;
+
+  const nodeCount = els.graph.querySelectorAll("g.node").length;
+  if (nodeCount <= 3) return 1.05;
+  if (nodeCount === 4) return 0.95;
+  if (nodeCount === 5) return 0.85;
+  return 0.75;
 }
 
 function attachGraphClicks(node) {

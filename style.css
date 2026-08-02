@@ -307,6 +307,8 @@ h3 { margin-bottom: 8px; font-size: 16px; color: var(--accent); }
 .zoom-controls button:hover, .code-actions button:hover { border-color: var(--accent); }
 
 .graph-wrap {
+  display: grid;
+  place-items: center;
   min-height: 480px;
   max-height: 620px;
   margin: 16px;
