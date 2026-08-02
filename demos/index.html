@@ -6,7 +6,7 @@
   <meta name="description" content="BPM 채보 제작과 가상 장치 입력 진단 공개 데모" />
   <title>Interactive Systems Demo Lab</title>
   <link rel="stylesheet" href="../style.css?v=20260802" />
-  <link rel="stylesheet" href="demo.css?v=20260802" />
+  <link rel="stylesheet" href="demo.css?v=20260803-device-layout" />
 </head>
 <body>
   <header class="topbar">
@@ -53,12 +53,12 @@
           <div class="device-actions"><button id="disconnect-device" type="button" disabled>Disconnect</button><button id="simulate-input" type="button" disabled>Random input</button><label class="auto-input-control"><input id="auto-input" type="checkbox" disabled /><span>Auto input</span></label></div>
         </section>
         <section class="input-panel" aria-labelledby="input-test-title">
-          <div class="panel-title-row"><div><h3 id="input-test-title">Input test</h3><p>Ready 상태에서 패드를 눌러 입력 수신을 시뮬레이션합니다.</p></div><span id="packet-count" class="packet-count">0 events</span></div>
+          <div class="panel-title-row"><div><h3 id="input-test-title">Input test</h3><p>실제 장치와 같은 2열 × 3단 배치에서 입력 수신을 시뮬레이션합니다.</p></div><span id="packet-count" class="packet-count">0 events</span></div>
           <div id="input-grid" class="input-grid" aria-label="가상 입력 채널"></div><p id="input-message" class="input-message" aria-live="polite">장치를 연결하면 진단 패드가 활성화됩니다.</p>
         </section>
       </div>
     </section>
   </main>
-  <script src="demo.js?v=20260802"></script>
+  <script src="demo.js?v=20260803-device-layout"></script>
 </body>
 </html>
