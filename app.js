@@ -135,7 +135,8 @@ const nodes = {
     ]),
     links: { "BPM + offset model": "rhythm_model", "Unity EditorWindow": "rhythm_editor", "Beat-aligned runtime spawn": "rhythm_runtime" },
     notes: [designNotes.rhythmModel, designNotes.rhythmTool],
-    doc: "docs/case-studies/bpm-rhythm-chart-editor.md"
+    doc: "docs/case-studies/bpm-rhythm-chart-editor.md",
+    demo: "demos/index.html#rhythm-demo"
   },
 
   rhythm_model: {
@@ -189,7 +190,8 @@ const nodes = {
     ]),
     links: { "Adapted connection layer": "ble_adapter", "Diagnostics UI": "ble_ui", "Input stream": "ble_input" },
     notes: [designNotes.bleFlow, designNotes.bleBoundary],
-    doc: "docs/case-studies/ble-device-diagnostics.md"
+    doc: "docs/case-studies/ble-device-diagnostics.md",
+    demo: "demos/index.html#ble-demo"
   },
 
   ble_adapter: {
@@ -523,6 +525,14 @@ function renderNotes(node) {
     docLink.href = node.doc;
     docLink.innerHTML = `<strong>Case Study Document</strong><span>${node.doc}</span>`;
     els.scripts.appendChild(docLink);
+  }
+
+  if (node.demo) {
+    const demoLink = document.createElement("a");
+    demoLink.className = "script-card";
+    demoLink.href = node.demo;
+    demoLink.innerHTML = `<strong>Open Interactive Demo</strong><span>${node.demo}</span>`;
+    els.scripts.appendChild(demoLink);
   }
 
   currentNotes.forEach((item, index) => {

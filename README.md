@@ -77,8 +77,16 @@ python -m http.server 4173
 
 자세한 검토 기준은 [Publication Review](PUBLICATION_REVIEW.md)와 [Third-Party Notices](THIRD_PARTY_NOTICES.md)를 참고하세요.
 
-## Planned Public Demos
+## Public Demos & Roadmap
 
-1. BPM과 오프셋을 설정하고 JSON 채보를 내보내는 독립 Unity Editor 데모
-2. 실제 BLE 장치 없이 키보드·가상 패킷으로 입력 상태를 표시하는 진단 UI
-3. 공개 MediaPipe 예제를 이용해 익명화된 목적지로 좌표 데이터를 전달하는 최소 데모
+[Demo Lab](demos/index.html)에서 BPM 채보 편집·재생과 가상 장치 검색·연결·입력 진단을 체험할 수 있습니다. 두 데모는 회사 원본 코드와 장치 프로토콜을 사용하지 않고 새로 작성했습니다.
+
+구현 완료:
+
+- BPM·오프셋 설정, 비트 그리드 편집, 재생과 JSON 내보내기
+- 가상 장치 검색·연결·해제, 랜덤 입력과 채널별 상태 점등
+
+추가 로드맵:
+
+1. 웹 BPM 데모의 핵심 모델을 독립 Unity Editor 샘플로 확장
+2. 공개 MediaPipe 예제를 이용해 익명화된 목적지로 좌표 데이터를 전달하는 최소 데모

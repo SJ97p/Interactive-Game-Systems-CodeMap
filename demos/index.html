@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="BPM 채보 제작과 가상 장치 입력 진단 공개 데모" />
+  <title>Interactive Systems Demo Lab</title>
+  <link rel="stylesheet" href="../style.css?v=20260802" />
+  <link rel="stylesheet" href="demo.css?v=20260802" />
+</head>
+<body>
+  <header class="topbar">
+    <div><p class="eyebrow">Public-safe Demo Lab</p><h1>Interactive Systems Demo Lab</h1></div>
+    <nav class="toplinks" aria-label="페이지 링크">
+      <a href="../index.html">Code Map</a><a href="../docs/index.md">Documents</a>
+      <a href="https://github.com/SJ97p/Interactive-Game-Systems-CodeMap" target="_blank" rel="noreferrer">GitHub</a>
+      <button id="theme-toggle" type="button">Black</button>
+    </nav>
+  </header>
+  <main class="demo-shell">
+    <section class="demo-intro" aria-labelledby="demo-title">
+      <div><p class="eyebrow">Independent reconstruction</p><h2 id="demo-title">두 시스템의 핵심 흐름을 직접 확인하세요.</h2></div>
+      <p>회사 코드·장치·프로토콜·에셋을 사용하지 않은 별도 구현입니다. 아래 데이터와 장치는 모두 가상입니다.</p>
+    </section>
+    <nav class="demo-tabs" aria-label="데모 선택">
+      <button class="demo-tab active" type="button" data-demo-target="rhythm-demo" aria-pressed="true">BPM Chart Editor</button>
+      <button class="demo-tab" type="button" data-demo-target="ble-demo" aria-pressed="false">Virtual Device Diagnostics</button>
+    </nav>
+    <section id="rhythm-demo" class="demo-page" aria-labelledby="rhythm-title">
+      <div class="demo-heading">
+        <div><p class="eyebrow">Timing authoring</p><h2 id="rhythm-title">BPM Chart Editor</h2><p>절대 시간을 감각적으로 입력하는 대신 BPM·오프셋·비트 위치로 노트를 구성합니다.</p></div>
+        <div class="demo-status" aria-live="polite"><span>Beat</span><strong id="beat-readout">1.00</strong><span id="time-readout">0.00 s</span></div>
+      </div>
+      <div class="rhythm-controls">
+        <label><span>BPM</span><input id="bpm-input" type="number" min="40" max="240" value="120" /></label>
+        <label><span>Offset (s)</span><input id="offset-input" type="number" min="0" max="5" step="0.05" value="0.20" /></label>
+        <label><span>Subdivision</span><select id="subdivision-input"><option value="1">1/4 beat</option><option value="2" selected>1/8 beat</option><option value="4">1/16 beat</option></select></label>
+        <div class="demo-actions"><button id="play-chart" class="primary-action" type="button">Play</button><button id="reset-chart" type="button">Reset</button><button id="clear-chart" type="button">Clear</button><button id="export-chart" type="button">Export JSON</button></div>
+      </div>
+      <div class="timeline-ruler" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
+      <div class="chart-stage"><div id="playhead" class="playhead" aria-hidden="true"></div><div id="chart-grid" class="chart-grid" role="grid" aria-label="4개 레인의 8비트 채보 그리드"></div></div>
+      <div class="chart-footer"><p id="chart-message" aria-live="polite">셀을 선택해 노트를 추가하거나 제거하세요.</p><details><summary>Generated chart data</summary><pre id="chart-json"><code></code></pre></details></div>
+    </section>
+    <section id="ble-demo" class="demo-page" aria-labelledby="ble-title" hidden>
+      <div class="demo-heading">
+        <div><p class="eyebrow">Simulated hardware workflow</p><h2 id="ble-title">Virtual Device Diagnostics</h2><p>실제 BLE 통신 없이 검색·연결·준비·입력 피드백의 UI 흐름만 재현합니다.</p></div>
+        <div class="connection-badge" id="connection-badge" data-state="idle" aria-live="polite"><span class="connection-dot"></span><strong id="connection-label">Idle</strong></div>
+      </div>
+      <div class="device-layout">
+        <section class="device-panel" aria-labelledby="device-list-title">
+          <div class="panel-title-row"><div><h3 id="device-list-title">Virtual devices</h3><p>실제 장치 식별자가 없는 임의 데이터입니다.</p></div><button id="scan-devices" class="primary-action" type="button">Scan</button></div>
+          <div id="device-list" class="device-list" aria-live="polite"><p class="empty-state">Scan을 눌러 가상 장치를 찾으세요.</p></div>
+          <div class="device-actions"><button id="disconnect-device" type="button" disabled>Disconnect</button><button id="simulate-input" type="button" disabled>Random input</button><label class="auto-input-control"><input id="auto-input" type="checkbox" disabled /><span>Auto input</span></label></div>
+        </section>
+        <section class="input-panel" aria-labelledby="input-test-title">
+          <div class="panel-title-row"><div><h3 id="input-test-title">Input test</h3><p>Ready 상태에서 패드를 눌러 입력 수신을 시뮬레이션합니다.</p></div><span id="packet-count" class="packet-count">0 events</span></div>
+          <div id="input-grid" class="input-grid" aria-label="가상 입력 채널"></div><p id="input-message" class="input-message" aria-live="polite">장치를 연결하면 진단 패드가 활성화됩니다.</p>
+        </section>
+      </div>
+    </section>
+  </main>
+  <script src="demo.js?v=20260802"></script>
+</body>
+</html>
