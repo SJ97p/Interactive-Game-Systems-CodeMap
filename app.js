@@ -354,7 +354,8 @@ const expandedTreeGroups = new Set(treeGroups.map((group) => group.id));
 const navStack = [];
 let currentNodeId = "overview";
 let treeSearchQuery = "";
-const defaultGraphScale = 0.7;
+const defaultGraphScale = 1;
+const graphRenderScale = 0.6;
 let graphScale = defaultGraphScale;
 let graphBaseSize = { width: 760, height: 420 };
 let currentNotes = [];
@@ -593,8 +594,8 @@ function setGraphScale(next) {
   graphScale = Math.min(1.8, Math.max(0.4, next));
   const svg = els.graph.querySelector("svg");
   if (svg) {
-    svg.style.width = `${graphBaseSize.width * graphScale}px`;
-    svg.style.height = `${graphBaseSize.height * graphScale}px`;
+    svg.style.width = `${graphBaseSize.width * graphRenderScale * graphScale}px`;
+    svg.style.height = `${graphBaseSize.height * graphRenderScale * graphScale}px`;
     svg.style.maxWidth = "none";
   }
   els.zoomReset.textContent = `${Math.round(graphScale * 100)}%`;
