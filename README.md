@@ -6,8 +6,8 @@
 
 ## 둘러보기
 
-- [Interactive Code Map](index.html) — 시스템 구조와 기여 범위를 탐색하는 메인 포트폴리오
-- [Demo Lab](demos/index.html) — BPM 채보와 가상 BLE 진단 흐름을 체험하는 공개 데모
+- [Interactive Code Map](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/) — 시스템 구조와 기여 범위를 탐색하는 메인 포트폴리오
+- [Demo Lab](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/demos/) — BPM 채보와 가상 BLE 진단 흐름을 체험하는 공개 데모
 - [BPM 기반 리듬게임 채보 시스템](docs/case-studies/bpm-rhythm-chart-editor.md)
 - [BLE 장치 설정 및 입력 진단](docs/case-studies/ble-device-diagnostics.md)
 - [MediaPipe–Unity 실시간 연동](docs/case-studies/mediapipe-unity-bridge.md)
