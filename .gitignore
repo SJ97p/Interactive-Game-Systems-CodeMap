@@ -1,0 +1,36 @@
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vs/
+.vscode/
+*.csproj
+*.sln
+
+# Unity / generated
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+
+# Dependencies and binaries
+node_modules/
+*.exe
+*.dll
+*.pdb
+*.zip
+
+# Secrets and local configuration
+.env
+.env.*
+*secret*
+*Secret*
+*credential*
+
+# Original company material must never be copied here
+private-source/
+original-assets/
+raw-captures/
+
