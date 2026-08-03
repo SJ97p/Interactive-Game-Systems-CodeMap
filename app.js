@@ -507,7 +507,7 @@ async function renderGraph(node) {
 }
 
 function getGraphRenderScale(node) {
-  if (node === nodes.overview) return 0.6;
+  if (node === nodes.overview) return 1.1;
 
   const nodeCount = els.graph.querySelectorAll("g.node").length;
   if (nodeCount <= 3) return 1.05;
