@@ -13,6 +13,13 @@
 - [MediaPipe–Unity 실시간 연동](docs/case-studies/mediapipe-unity-bridge.md)
 - [C++ DB 서버–Unity 연동](docs/case-studies/cpp-db-server-integration.md)
 
+## 바로가기
+
+[![인터랙티브 코드맵](assets/navigation/code-map-link.svg)](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/)
+
+[![데모 랩](assets/navigation/demo-lab-link.svg)](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/demos/)
+
+> 코드맵은 시스템 구조와 기여 범위를, 데모 랩은 BPM 채보와 가상 BLE 진단 흐름을 보여줍니다.
 ## 프로젝트 개요
 
 | 항목 | 내용 |
@@ -91,3 +98,4 @@ Demo Lab은 회사 원본 코드를 복사한 것이 아니라, 제가 해결했
 
 - [공개 전 검토 기준](PUBLICATION_REVIEW.md)
 - [외부 기술 및 저작권 고지](THIRD_PARTY_NOTICES.md)
+
