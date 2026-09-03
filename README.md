@@ -8,12 +8,18 @@
 
 ## 프로젝트 개요
 
-| 항목 | 내용 |
+| 항목 | 포트폴리오 표기 |
 |---|---|
+| 프로젝트 | Interactive Game Systems |
+| 장르 | 실물 타격 장치·카메라 포즈 인식 기반 체감형 격투·리듬게임 |
 | 기간 | 2024.07 ~ 2025.02 |
-| 팀 | 4명 (디자인 1명 포함) |
-| 역할 | Unity 제작 도구 · BLE 연결/진단 UI · MediaPipe 데이터 브리지 · Unity–서버 응용 연동 |
-| 공통 입력 | 좌·우와 높이 조합으로 구분되는 실물 타격 입력 |
+| 인원 | 4인 팀 프로젝트 · 디자인 1인 포함 |
+| 역할 | Unity 클라이언트 개발 / BPM 채보 도구, BLE 연결·진단 UI, MediaPipe 데이터 브리지 및 게임 서버 연동 |
+| 엔진·언어 | Unity / C# / JavaScript / Node.js / C++ |
+| 핵심 기술 | Unity EditorWindow, BLE, MediaPipe, JSON, UDP·TCP, Node.js·Express, ODBC·Database |
+| 핵심 설계 | BPM·Offset·Beat 타이밍 모델, 2열×3단 입력 매핑, BLE 연결 상태 관리, 포즈 판정·리깅용 이중 데이터 전달, Unity–Server–DB 요청 흐름 |
+| 직접 구현·재구성 | BPM 채보 제작·인게임 스폰, BLE 검색·연결·구독·재연결 및 6개 입력 시각화, 관절 좌표 가공·스케일 조정·UDP 전달, Unity–서버 API 연동 |
+| 프로젝트 목표 | 실제 사용자의 자세와 타격 위치를 게임 입력으로 변환하고, 하나의 실물 장치를 격투와 리듬 플레이로 확장하는 체감형 게임 시스템 구현 |
 
 [![인터랙티브 코드맵](assets/navigation/code-map-link.svg)](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/)
 
