@@ -1,10 +1,6 @@
 # Interactive Game Systems Code Map
 
-이 저장소는 하나의 실물 타격 장치를 서로 다른 두 게임 경험에 연결하며, 외부 입력을 플레이어가 믿을 수 있는 판정과 팀이 반복해서 사용할 수 있는 제작 환경으로 바꾼 과정을 정리한 포트폴리오입니다.
-
-한 게임에서는 카메라 자세 인식과 실제 타격 위치를 함께 사용해 격투 동작을 판정했습니다. 다른 게임에서는 좌·우 네 개의 타격 입력을 음악의 박자와 연결해, 발로 밟는 리듬게임의 감각을 타격으로 옮기고자 했습니다. 두 경험에서 제가 가장 중요하게 본 것은 “연결되었다”는 사실이 아니라, 플레이어가 자신의 동작과 게임 판정을 믿고 몰입할 수 있는 정확도였습니다.
-
-> 실제 회사명, 프로젝트명, 장치 식별자, 전용 프로토콜과 원본 소스는 공개하지 않습니다. 이 저장소에는 공개 가능한 범위의 설계 판단, 직접 구현·수정한 코드 스냅샷, 그리고 원리를 설명하기 위해 새로 만든 데모만 담았습니다.
+하나의 실물 타격 장치를 카메라 포즈 인식 기반 격투와 리듬 플레이에 연결한 체감형 게임 시스템 프로젝트입니다.
 
 ## 프로젝트 개요
 
@@ -17,87 +13,22 @@
 | 역할 | Unity 클라이언트 개발 / BPM 채보 도구, BLE 연결·진단 UI, MediaPipe 데이터 브리지 및 게임 서버 연동 |
 | 엔진·언어 | Unity / C# / JavaScript / Node.js / C++ |
 | 핵심 기술 | Unity EditorWindow, BLE, MediaPipe, JSON, UDP·TCP, Node.js·Express, ODBC·Database |
-| 핵심 설계 | BPM·Offset·Beat 타이밍 모델, 2열×3단 입력 매핑, BLE 연결 상태 관리, 포즈 판정·리깅용 이중 데이터 전달, Unity–Server–DB 요청 흐름 |
 | 직접 구현·재구성 | BPM 채보 제작·인게임 스폰, BLE 검색·연결·구독·재연결 및 6개 입력 시각화, 관절 좌표 가공·스케일 조정·UDP 전달, Unity–서버 API 연동 |
-| 프로젝트 목표 | 실제 사용자의 자세와 타격 위치를 게임 입력으로 변환하고, 하나의 실물 장치를 격투와 리듬 플레이로 확장하는 체감형 게임 시스템 구현 |
 
 [![인터랙티브 코드맵](assets/navigation/code-map-link.svg)](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/)
 
-> 위 버튼을 누르면 담당 시스템의 관계도와 공개 가능한 코드 전문을 정리한 인터랙티브 코드맵으로 이동합니다.
-
-[![데모 랩](assets/navigation/demo-lab-link.svg)](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/demos/)
-
-> 데모 랩에서는 BPM 기반 채보와 가상 BLE 진단 흐름을 확인할 수 있습니다.
-
-## 사례별로 읽기
-
-전체 노드 그래프에서 무엇부터 읽어야 할지 찾지 않아도 되도록, 제가 직접 판단과 구현을 설명할 수 있는 세 사례를 분리했습니다. 각 페이지는 **상황 → 검토한 방식 → 선택한 방식 → 구조 → 확인한 결과 → 공개 경계와 자체 피드백** 순서로 읽을 수 있습니다.
-
-| 사례 | 바로가기 | 다루는 질문 |
-|---|---|---|
-| BPM·Offset 기반 채보 제작 도구 | [사례 열기](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/#case=bpm-chart) | 절대 시간 입력 기록을 팀이 함께 쓰는 박자 기준으로 어떻게 바꿨는가 |
-| BLE 연결·입력 진단 흐름 | [사례 열기](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/#case=ble-diagnostics) | 플레이 진입 전, 연결·구독·입력 중 어디에서 문제가 생겼는지 어떻게 구분했는가 |
-| MediaPipe 실행 환경과 이중 전달 | [사례 열기](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/#case=mediapipe-bridge) | 두 수신처에 필요한 Landmark를 어떤 환경과 경로로 전달했는가 |
-
-서버·DB 연동은 전체 시스템 그래프에서 확인할 수 있습니다. 공개 가능한 근거가 일반화된 구조 설명에 머물러 있어, 독립 사례로 과장하지 않았습니다.
-
-## 이 코드맵에서 말하고 싶은 것
-
-### 1. 자세와 타격을 함께 확인한 이유
-
-장치만 손에 끼고 쳐도 타격으로 인식될 수 있었습니다. 대결 게임으로 확장했을 때 이것은 태권도 동작을 활용하는 게임의 취지와 맞지 않았습니다. 그래서 카메라가 올바른 발차기 자세를 인식하고, 그 상태에서 실제 타격 신호가 들어올 때만 공격이 성립하도록 두 조건을 연결했습니다.
-
-MediaPipe는 환경에 따라 관절 오버레이가 흔들리거나, 손이 먼저 움직이고 포즈가 뒤늦게 따라오거나, FPS가 낮아지는 차이가 있었습니다. Python·Linux·Web 등 여러 환경과 30/60FPS 조건을 비교했고, 60FPS를 지원하면서 포즈 데이터가 가장 안정적으로 나온 Web 환경을 선택했습니다. 이후 Landmark 데이터를 Unity의 캐릭터 자세 동기화와 자세 분류 경로로 나누고, 최종 판정 결과를 게임 플레이에 연결했습니다.
-
 <details>
-<summary>MediaPipe 비교와 Unity 브리지 보기</summary>
+<summary>주요 사례 바로가기</summary>
 
-[MediaPipe–Unity 실시간 연동](docs/case-studies/mediapipe-unity-bridge.md)
+- [BPM·Offset 기반 채보 제작 도구](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/#case=bpm-chart)
+- [BLE 연결·입력 진단 흐름](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/#case=ble-diagnostics)
+- [MediaPipe 실행 환경과 이중 데이터 전달](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/#case=mediapipe-bridge)
 
 </details>
 
-### 2. 현장에서 원인을 바로 구분할 수 있게 한 BLE 진단
-
-기존에는 입력이 들어오는지 확인하려면 실제 플레이 화면까지 들어가 타이밍에 맞춰 장치를 쳐 봐야 했습니다. 연결이 끊긴 것인지, 구독이 안 된 것인지, 연결은 됐는데 특정 입력만 오지 않는 것인지 바로 알기 어려웠습니다.
-
-그래서 장치 검색·연결·해제·재검색·구독·재연결 흐름을 Unity 화면에서 다루고, 연결 상태와 각 타격 위치의 입력 상태를 분리해 시각화했습니다. 장치를 다시 연결하고 입력을 확인하는 과정이 곧바로 한 화면에서 끝나면서, 현장에서도 문제의 위치를 빠르게 좁힐 수 있었습니다.
-
 <details>
-<summary>BLE 진단 흐름 보기</summary>
+<summary>공개 범위</summary>
 
-[BLE 장치 설정 및 입력 진단](docs/case-studies/ble-device-diagnostics.md)
+실제 회사명·프로젝트명·장치 식별자·전용 프로토콜·원본 소스는 공개하지 않습니다. CodeMap에는 공개 가능한 설계 판단, 직접 구현·수정한 코드 스냅샷, 재구성한 데모만 포함합니다.
 
 </details>
-
-### 3. 박자를 기록하는 기능을, 팀이 쓰는 제작 도구로 바꾸기
-
-초기 리듬게임은 음악을 틀고 키를 누른 시점을 `float` 절대 시간으로 녹화하는 방식이었습니다. 빠르게 초안을 만들 수는 있었지만, 작업자마다 타이밍이 달라지고 수정하려면 구간을 반복해 들으며 시간값을 계속 고쳐야 했습니다. 실물 타격 리듬게임에서 판정이 박자와 어긋나면 플레이어는 모니터를 보며 자기 동작을 억지로 바꾸게 되고, 그 순간 몰입이 깨진다고 생각했습니다.
-
-그래서 BPM·Offset·Beat를 공통 기준으로 삼고, 재생 시간에 맞춰 노트의 위치와 순서가 함께 동기화되도록 제작 구조를 바꿨습니다. 팀원이 실제로 사용하며 스크롤 이동과 비트 보정, 노트 동기화에서 발견한 문제를 알려주면 반복해서 반영했습니다. 목표는 개발자만 쓸 수 있는 도구가 아니라, 처음 사용하는 팀원도 같은 기준으로 채보를 만들고 인게임에서 바로 검증할 수 있는 환경이었습니다.
-
-<details>
-<summary>BPM 채보 제작 도구 보기</summary>
-
-[BPM 기반 리듬게임 채보 시스템](docs/case-studies/bpm-rhythm-chart-editor.md)
-
-</details>
-
-## 기여 범위
-
-### 직접 설계·구현
-
-- BPM 기반 채보 방식 제안, 데이터 구조, Unity EditorWindow, JSON 입출력, 인게임 BPM 노트 스폰
-- BLE 연결 화면과 검색·연결·상태·입력 진단 흐름
-- MediaPipe Web 설정 UI, Landmark 데이터 가공, Node.js 중계와 패키징
-- Unity가 사용하는 로그인·계정·랭킹·플레이 기록 요청의 서버/DB 응용 연동
-
-### 기존 코드·외부 기술을 바탕으로 수정·통합
-
-- 사내 BLE 연결 모듈을 실제 빌드와 상태 UI 흐름에 맞게 수정
-- MediaPipe 예제를 카메라 설정과 Unity 전송 목적에 맞게 확장
-- 공개 리깅 사례를 비교하며 본 매핑·좌표·회전·보간 방식 검증
-- 제공된 네트워크 API 위에서 Unity 요청과 서버 응용 흐름 연결
-
-### 이 저장소에서 주장하지 않는 범위
-
-- 저수준 BLE 플러그인, MediaPipe 관절 추론 모델, 자세 분류 모델 학습 로직, 네트워크 라이브러리 자체

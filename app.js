@@ -363,6 +363,7 @@ const cases = {
     alternatives: "입력 시점의 절대 시간을 개별 보정하는 방식과, BPM·Offset·Beat를 제작과 실행의 공통 기준으로 두는 방식을 비교했습니다.",
     decision: "BPM·Offset·Beat를 채보 데이터의 기준으로 정하고, Unity EditorWindow에서 기록·편집한 JSON을 인게임 노트 스폰도 같은 박자 기준으로 읽도록 구성했습니다.",
     structure: ["곡 메타데이터", "BPM·Offset·Beat Clock", "EditorWindow 기록·편집", "Chart JSON", "인게임 노트 스폰"],
+    implementation: "EditorWindow가 BPM·Offset·Beat와 레인 데이터를 JSON으로 저장하고, 런타임 스폰은 같은 Clock으로 Beat를 재생 시간에 맞춥니다. 제작 도구와 인게임이 별도의 시간 기준을 갖지 않도록 했습니다.",
     result: "팀원이 도구를 사용하며 스크롤 이동, BPM 단위 이동, 노트 동기화에서 찾은 문제를 수정했습니다. 제작과 인게임 실행이 같은 박자 기준을 사용하도록 맞췄고, 노트가 판정 지점의 박자에 맞게 들어오는 것을 플레이로 확인했습니다.",
     feedback: "정확도나 제작 시간은 측정하지 않았습니다. 다만 실제 사용 과정에서 드러난 편집·동기화 문제를 다시 도구에 반영한 점이 이 사례의 검증 근거입니다.",
     doc: "docs/case-studies/bpm-rhythm-chart-editor.md",
@@ -378,6 +379,7 @@ const cases = {
     alternatives: "기존처럼 플레이 장면에서만 확인하는 방법과, 연결 상태와 2열×3단 입력을 분리해 보여주는 진단 화면을 비교했습니다.",
     decision: "기존 연결 모듈을 빌드 흐름에 맞게 수정하고, 검색·선택·연결·구독·해제·재연결 상태와 여섯 입력 채널을 하나의 진단 UI에서 다루도록 구성했습니다.",
     structure: ["장치 검색", "장치 선택", "연결·구독 상태", "Ready", "6개 입력 채널 시각화"],
+    implementation: "BLE 연결 상태와 입력 이벤트를 별도 표시 경로로 두고, 재검색·재연결과 2열×3단 채널 점등을 진단 화면에서 처리했습니다. 공개 페이지에는 동일한 흐름을 재현한 가상 장치 데모를 사용했습니다.",
     result: "연결 상태와 입력 채널을 분리해 보면서, 실기기 문제가 연결 단계인지 센서 입력 단계인지 플레이 진입 전에 좁힐 수 있게 했습니다.",
     feedback: "원본 장치 UI와 저수준 BLE 플러그인은 공개 대상이 아닙니다. 이 CodeMap의 데모는 실제 통신을 흉내 낸 가상 장치 화면이며, 공개 가능한 진단 흐름만 재구성했습니다.",
     doc: "docs/case-studies/ble-device-diagnostics.md",
@@ -393,6 +395,7 @@ const cases = {
     alternatives: "Python·Linux·Web 실행 환경을 직접 비교했습니다. 프레임 수만이 아니라 카메라 호환성, 움직임 연속성, 관절 좌표의 흔들림을 함께 확인했습니다.",
     decision: "60FPS 지원과 관절 출력의 안정성을 기준으로 Web 실행 환경을 선택했습니다. 이후 Landmark 좌표를 가공·스케일 조정해 Unity 리깅 경로와 Python 자세 판정 경로로 각각 전달했습니다.",
     structure: ["카메라", "MediaPipe Web", "Landmark 가공·스케일", "Unity 리깅", "Python 자세 판정", "BLE 타격과 최종 판정"],
+    implementation: "Web에서 얻은 Landmark를 Unity 소비 좌표로 가공한 뒤 UDP 포트 두 개로 전달했습니다. 하나는 Unity 리깅 검증용, 다른 하나는 팀원이 만든 Python 자세 판정 모듈의 입력용입니다.",
     result: "두 수신처가 필요한 데이터를 각각 받을 수 있는 브리지 경로를 구성했습니다. 발차기 자세 판정과 실제 타격 신호가 모두 들어와야 공격이 성립하도록 게임 판정에 연결했습니다.",
     feedback: "MediaPipe의 관절 추론과 자세 분류 모델 학습은 제 구현 범위가 아닙니다. Unity 리깅은 검증용 프로토타입이었고, 최종 적용 여부를 성과로 주장하지 않습니다.",
     doc: "docs/case-studies/mediapipe-unity-bridge.md",
@@ -521,6 +524,7 @@ function renderCaseDetail(item) {
       <article class="case-decision"><h3>선택한 방식</h3><p>${escapeHtml(item.decision)}</p></article>
     </div>
     <section class="case-structure"><h3>구조·구현 흐름</h3><ol>${structure}</ol></section>
+    <section class="case-implementation"><h3>구현과 근거</h3><p>${escapeHtml(item.implementation)}</p></section>
     <section class="case-feedback case-result-panel"><h3>확인한 결과</h3><p>${escapeHtml(item.result)}</p></section>
     <section class="case-feedback"><h3>공개 경계와 자체 피드백</h3><p>${escapeHtml(item.feedback)}</p></section>
     <div class="case-actions">${links}</div>`;
