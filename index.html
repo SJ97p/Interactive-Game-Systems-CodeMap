@@ -15,13 +15,26 @@
       <h1>Interactive Game Systems Code Map</h1>
     </div>
     <nav class="toplinks" aria-label="External links">
+      <button class="app-nav-button is-active" type="button" data-app-view="cases">사례로 보기</button>
+      <button class="app-nav-button" type="button" data-app-view="systems">전체 시스템</button>
+      <button class="app-nav-button" type="button" data-app-view="code">전체 코드</button>
       <a href="demos/index.html">Demo</a>
       <a href="https://github.com/SJ97p/Interactive-Game-Systems-CodeMap" target="_blank" rel="noreferrer">GitHub</a>
       <button id="theme-toggle" type="button" title="테마 전환">Black</button>
     </nav>
   </header>
 
-  <main id="layout" class="layout">
+  <section id="case-hub" class="case-hub" aria-label="사례별 탐색">
+    <div class="case-hero">
+      <p class="eyebrow">Case Studies</p>
+      <h2>상황과 판단부터 읽는<br />Interactive Game Systems</h2>
+      <p>세 사례는 모두 실제 사용자가 자신의 동작과 게임 판정을 믿을 수 있게 만드는 과정에서 출발했습니다. 공개할 수 있는 범위 안에서 판단, 구조, 근거와 한계를 함께 남겼습니다.</p>
+    </div>
+    <div id="case-cards" class="case-cards"></div>
+    <p class="case-hub-note">서버·DB 연동은 전체 시스템 탐색기에 남겼습니다. 공개 가능한 근거가 일반화된 구조 설명에 머물러, 독립 사례로 과장하지 않았습니다.</p>
+  </section>
+
+  <main id="layout" class="layout" hidden>
     <aside class="sidebar">
       <div class="panel-head">
         <h2>프로젝트 탐색기</h2>
@@ -34,6 +47,7 @@
     </aside>
 
     <section class="main-panel">
+      <section id="case-detail" class="case-detail" hidden></section>
       <div class="panel-head graph-head">
         <div>
           <h2 id="node-title">전체 개요</h2>

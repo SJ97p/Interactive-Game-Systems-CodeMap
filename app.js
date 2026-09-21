@@ -353,9 +353,57 @@ const treeGroups = [
   { id: "server", title: "C++ 게임 서버", children: ["server_dispatch", "server_workers", "server_db"] }
 ];
 
+const cases = {
+  "bpm-chart": {
+    number: "01",
+    nodeId: "rhythm",
+    title: "BPM·Offset 기반 채보 제작 도구",
+    card: "절대 시간 입력 기록을 팀이 함께 쓰는 박자 기준의 제작·실행 데이터로 전환",
+    situation: "초기 채보는 음악을 재생하며 누른 네 레인의 시점을 float 절대 시간으로 저장했습니다. 초안을 빠르게 만들 수는 있었지만, 작업자마다 기록 기준이 달라지고 수정할 때마다 구간을 다시 들으며 시간값을 고쳐야 했습니다.",
+    alternatives: "입력 시점의 절대 시간을 개별 보정하는 방식과, BPM·Offset·Beat를 제작과 실행의 공통 기준으로 두는 방식을 비교했습니다.",
+    decision: "BPM·Offset·Beat를 채보 데이터의 기준으로 정하고, Unity EditorWindow에서 기록·편집한 JSON을 인게임 노트 스폰도 같은 박자 기준으로 읽도록 구성했습니다.",
+    structure: ["곡 메타데이터", "BPM·Offset·Beat Clock", "EditorWindow 기록·편집", "Chart JSON", "인게임 노트 스폰"],
+    result: "팀원이 도구를 사용하며 스크롤 이동, BPM 단위 이동, 노트 동기화에서 찾은 문제를 수정했습니다. 제작과 인게임 실행이 같은 박자 기준을 사용하도록 맞췄고, 노트가 판정 지점의 박자에 맞게 들어오는 것을 플레이로 확인했습니다.",
+    feedback: "정확도나 제작 시간은 측정하지 않았습니다. 다만 실제 사용 과정에서 드러난 편집·동기화 문제를 다시 도구에 반영한 점이 이 사례의 검증 근거입니다.",
+    doc: "docs/case-studies/bpm-rhythm-chart-editor.md",
+    demo: "demos/index.html#rhythm-demo",
+    cta: "CodeMap · BPM·Offset·Beat 채보 구조와 공개 설계 보기"
+  },
+  "ble-diagnostics": {
+    number: "02",
+    nodeId: "ble",
+    title: "BLE 연결·입력 진단 흐름",
+    card: "플레이 화면을 거치지 않고 연결·구독·채널 입력의 문제 위치를 한 화면에서 구분",
+    situation: "입력이 들어오는지 확인하려면 실제 플레이 화면으로 넘어가 장치를 타격해야 했습니다. 연결이 끊긴 것인지, 구독이 안 된 것인지, 연결은 됐지만 특정 위치의 입력만 없는 것인지 바로 구분하기 어려웠습니다.",
+    alternatives: "기존처럼 플레이 장면에서만 확인하는 방법과, 연결 상태와 2열×3단 입력을 분리해 보여주는 진단 화면을 비교했습니다.",
+    decision: "기존 연결 모듈을 빌드 흐름에 맞게 수정하고, 검색·선택·연결·구독·해제·재연결 상태와 여섯 입력 채널을 하나의 진단 UI에서 다루도록 구성했습니다.",
+    structure: ["장치 검색", "장치 선택", "연결·구독 상태", "Ready", "6개 입력 채널 시각화"],
+    result: "연결 상태와 입력 채널을 분리해 보면서, 실기기 문제가 연결 단계인지 센서 입력 단계인지 플레이 진입 전에 좁힐 수 있게 했습니다.",
+    feedback: "원본 장치 UI와 저수준 BLE 플러그인은 공개 대상이 아닙니다. 이 CodeMap의 데모는 실제 통신을 흉내 낸 가상 장치 화면이며, 공개 가능한 진단 흐름만 재구성했습니다.",
+    doc: "docs/case-studies/ble-device-diagnostics.md",
+    demo: "demos/index.html#ble-demo",
+    cta: "CodeMap · BLE 연결 상태와 6채널 진단 흐름 보기"
+  },
+  "mediapipe-bridge": {
+    number: "03",
+    nodeId: "pose",
+    title: "MediaPipe 실행 환경 선택과 이중 데이터 전달",
+    card: "카메라 Landmark를 Unity 리깅과 자세 판정 경로에 각각 전달하기 위한 실행 환경·브리지 검증",
+    situation: "카메라 환경에 따라 관절 오버레이가 흔들리거나 동작보다 늦게 따라왔고, 출력이 끊기는 경우도 있었습니다. 이 데이터는 Unity 캐릭터 동기화뿐 아니라 별도의 Python 자세 판정 모듈에도 전달되어야 했습니다.",
+    alternatives: "Python·Linux·Web 실행 환경을 직접 비교했습니다. 프레임 수만이 아니라 카메라 호환성, 움직임 연속성, 관절 좌표의 흔들림을 함께 확인했습니다.",
+    decision: "60FPS 지원과 관절 출력의 안정성을 기준으로 Web 실행 환경을 선택했습니다. 이후 Landmark 좌표를 가공·스케일 조정해 Unity 리깅 경로와 Python 자세 판정 경로로 각각 전달했습니다.",
+    structure: ["카메라", "MediaPipe Web", "Landmark 가공·스케일", "Unity 리깅", "Python 자세 판정", "BLE 타격과 최종 판정"],
+    result: "두 수신처가 필요한 데이터를 각각 받을 수 있는 브리지 경로를 구성했습니다. 발차기 자세 판정과 실제 타격 신호가 모두 들어와야 공격이 성립하도록 게임 판정에 연결했습니다.",
+    feedback: "MediaPipe의 관절 추론과 자세 분류 모델 학습은 제 구현 범위가 아닙니다. Unity 리깅은 검증용 프로토타입이었고, 최종 적용 여부를 성과로 주장하지 않습니다.",
+    doc: "docs/case-studies/mediapipe-unity-bridge.md",
+    cta: "CodeMap · MediaPipe Landmark 이중 전달 구조 보기"
+  }
+};
+
 const expandedTreeGroups = new Set(treeGroups.map((group) => group.id));
 const navStack = [];
 let currentNodeId = "overview";
+let currentCaseId = null;
 let treeSearchQuery = "";
 const defaultGraphScale = 1;
 let graphRenderScale = 0.6;
@@ -365,6 +413,9 @@ let currentNotes = [];
 
 const els = {
   layout: document.getElementById("layout"),
+  caseHub: document.getElementById("case-hub"),
+  caseCards: document.getElementById("case-cards"),
+  caseDetail: document.getElementById("case-detail"),
   tree: document.getElementById("tree"),
   search: document.getElementById("explorer-search"),
   title: document.getElementById("node-title"),
@@ -413,6 +464,116 @@ mermaid.initialize({
 
 function normalize(value) {
   return String(value || "").toLowerCase().replace(/\s+/g, " ").trim();
+}
+
+function setHash(value) {
+  const next = value ? `#${value}` : "";
+  if (window.location.hash !== next) history.replaceState(null, "", next || window.location.pathname);
+}
+
+function updateAppNavigation(view) {
+  document.querySelectorAll("[data-app-view]").forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.appView === view);
+  });
+}
+
+function renderCaseCards() {
+  els.caseCards.innerHTML = "";
+  Object.entries(cases).forEach(([id, item]) => {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "case-card";
+    card.innerHTML = `
+      <span class="case-number">${item.number}</span>
+      <h3>${escapeHtml(item.title)}</h3>
+      <p>${escapeHtml(item.card)}</p>
+      <span class="case-card-link">사례 읽기 <span aria-hidden="true">→</span></span>`;
+    card.addEventListener("click", () => selectCase(id));
+    els.caseCards.appendChild(card);
+  });
+}
+
+function renderCaseDetail(item) {
+  if (!item) {
+    els.caseDetail.hidden = true;
+    els.caseDetail.innerHTML = "";
+    return;
+  }
+
+  const structure = item.structure.map((step, index) => `
+    <li><span>${String(index + 1).padStart(2, "0")}</span>${escapeHtml(step)}</li>`).join("");
+  const links = [
+    `<a class="case-cta" href="${item.doc}" target="_blank" rel="noreferrer">${escapeHtml(item.cta)} <span aria-hidden="true">↗</span></a>`,
+    item.demo ? `<a class="case-cta secondary" href="${item.demo}" target="_blank" rel="noreferrer">공개 데모 열기 <span aria-hidden="true">↗</span></a>` : ""
+  ].join("");
+
+  els.caseDetail.hidden = false;
+  els.caseDetail.innerHTML = `
+    <div class="case-detail-head">
+      <button class="case-back" type="button" data-app-view="cases">← 사례 목록</button>
+      <p class="eyebrow">CASE ${item.number}</p>
+      <h2>${escapeHtml(item.title)}</h2>
+      <p>${escapeHtml(item.card)}</p>
+    </div>
+    <div class="case-story-grid">
+      <article><h3>상황</h3><p>${escapeHtml(item.situation)}</p></article>
+      <article><h3>검토한 방식</h3><p>${escapeHtml(item.alternatives)}</p></article>
+      <article class="case-decision"><h3>선택한 방식</h3><p>${escapeHtml(item.decision)}</p></article>
+      <article class="case-result"><h3>확인한 결과</h3><p>${escapeHtml(item.result)}</p></article>
+    </div>
+    <section class="case-structure"><h3>구조 흐름</h3><ol>${structure}</ol></section>
+    <section class="case-feedback"><h3>공개 경계와 자체 피드백</h3><p>${escapeHtml(item.feedback)}</p></section>
+    <div class="case-actions">${links}</div>`;
+
+  els.caseDetail.querySelector("[data-app-view='cases']").addEventListener("click", () => setAppView("cases"));
+}
+
+function setAppView(view, { updateUrl = true } = {}) {
+  const showCases = view === "cases";
+  els.caseHub.hidden = !showCases;
+  els.layout.hidden = showCases;
+  updateAppNavigation(view);
+
+  if (showCases) {
+    currentCaseId = null;
+    els.layout.classList.remove("case-mode");
+    renderCaseDetail(null);
+    if (updateUrl) setHash("cases");
+    return;
+  }
+
+  currentCaseId = null;
+  els.layout.classList.remove("case-mode");
+  renderCaseDetail(null);
+  if (updateUrl) setHash(view === "code" ? "code" : "systems");
+  if (view === "systems") navigate("overview", false, { preserveCase: true });
+}
+
+function selectCase(id, { updateUrl = true } = {}) {
+  const item = cases[id];
+  if (!item) return;
+  currentCaseId = id;
+  els.caseHub.hidden = true;
+  els.layout.hidden = false;
+  els.layout.classList.add("case-mode");
+  updateAppNavigation("cases");
+  renderCaseDetail(item);
+  if (updateUrl) setHash(`case=${encodeURIComponent(id)}`);
+  navigate(item.nodeId, false, { preserveCase: true });
+  window.scrollTo({ top: 0, behavior: "instant" });
+}
+
+function openInitialView() {
+  const hash = decodeURIComponent(window.location.hash.replace(/^#/, ""));
+  if (hash.startsWith("case=")) {
+    selectCase(hash.slice("case=".length), { updateUrl: false });
+    return;
+  }
+  if (hash === "systems" || hash === "code") {
+    setAppView(hash, { updateUrl: false });
+    return;
+  }
+  setAppView("cases", { updateUrl: false });
 }
 
 function renderTree() {
@@ -471,8 +632,13 @@ function createTreeButton(id, label, className) {
   return button;
 }
 
-async function navigate(id, pushHistory = true) {
+async function navigate(id, pushHistory = true, { preserveCase = false } = {}) {
   if (!nodes[id]) return;
+  if (!preserveCase && currentCaseId) {
+    currentCaseId = null;
+    els.layout.classList.remove("case-mode");
+    renderCaseDetail(null);
+  }
   if (pushHistory && currentNodeId !== id) navStack.push(currentNodeId);
   currentNodeId = id;
   const node = nodes[id];
@@ -501,9 +667,31 @@ async function renderGraph(node) {
     graphRenderScale = getGraphRenderScale(node);
     setGraphScale(defaultGraphScale);
   } catch (error) {
-    els.graph.textContent = "그래프를 렌더링하지 못했습니다.";
+    renderGraphFallback(node);
     console.error(error);
   }
+}
+
+function renderGraphFallback(node) {
+  const links = Object.values(node.links || {});
+  const related = [...new Set(links)].filter((id) => nodes[id]);
+  els.graph.className = "graph-fallback";
+  els.graph.innerHTML = `
+    <p class="graph-fallback-label">Structure summary</p>
+    <h3>${escapeHtml(node.title)}</h3>
+    <p>${escapeHtml(node.summary)}</p>
+    <div class="graph-fallback-links"></div>`;
+  const container = els.graph.querySelector(".graph-fallback-links");
+  related.forEach((id) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = nodes[id].title;
+    button.addEventListener("click", () => navigate(id));
+    container.appendChild(button);
+  });
+  graphBaseSize = { width: 760, height: 280 };
+  graphRenderScale = 1;
+  setGraphScale(1);
 }
 
 function getGraphRenderScale(node) {
@@ -670,6 +858,11 @@ els.theme.addEventListener("click", () => {
   localStorage.setItem("portfolio-theme", dark ? "dark" : "light");
 });
 
+document.querySelectorAll("[data-app-view]").forEach((button) => {
+  if (button.closest("#case-detail")) return;
+  button.addEventListener("click", () => setAppView(button.dataset.appView));
+});
+
 els.modalClose.addEventListener("click", () => els.modal.close());
 els.modal.addEventListener("click", (event) => {
   if (event.target === els.modal) els.modal.close();
@@ -681,5 +874,8 @@ if (localStorage.getItem("portfolio-theme") === "dark") {
 }
 
 setCodePanelWidth(Number(localStorage.getItem("portfolio-code-panel-width")) || 460);
+renderCaseCards();
 renderTree();
-navigate("overview", false);
+navigate("overview", false, { preserveCase: true });
+openInitialView();
+window.addEventListener("hashchange", openInitialView);

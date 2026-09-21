@@ -29,6 +29,18 @@
 
 > 데모 랩에서는 BPM 기반 채보와 가상 BLE 진단 흐름을 확인할 수 있습니다.
 
+## 사례별로 읽기
+
+전체 노드 그래프에서 무엇부터 읽어야 할지 찾지 않아도 되도록, 제가 직접 판단과 구현을 설명할 수 있는 세 사례를 분리했습니다. 각 페이지는 **상황 → 검토한 방식 → 선택한 방식 → 구조 → 확인한 결과 → 공개 경계와 자체 피드백** 순서로 읽을 수 있습니다.
+
+| 사례 | 바로가기 | 다루는 질문 |
+|---|---|---|
+| BPM·Offset 기반 채보 제작 도구 | [사례 열기](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/#case=bpm-chart) | 절대 시간 입력 기록을 팀이 함께 쓰는 박자 기준으로 어떻게 바꿨는가 |
+| BLE 연결·입력 진단 흐름 | [사례 열기](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/#case=ble-diagnostics) | 플레이 진입 전, 연결·구독·입력 중 어디에서 문제가 생겼는지 어떻게 구분했는가 |
+| MediaPipe 실행 환경과 이중 전달 | [사례 열기](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/#case=mediapipe-bridge) | 두 수신처에 필요한 Landmark를 어떤 환경과 경로로 전달했는가 |
+
+서버·DB 연동은 전체 시스템 그래프에서 확인할 수 있습니다. 공개 가능한 근거가 일반화된 구조 설명에 머물러 있어, 독립 사례로 과장하지 않았습니다.
+
 ## 이 코드맵에서 말하고 싶은 것
 
 ### 1. 자세와 타격을 함께 확인한 이유
