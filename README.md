@@ -12,7 +12,7 @@
 | 인원 | 4인 팀 프로젝트 · 디자인 1인 포함 |
 | 역할 | Unity 클라이언트 개발 / BPM 채보 도구, BLE 연결·진단 UI, MediaPipe 데이터 브리지 및 게임 서버 연동 |
 | 엔진·언어 | Unity / C# / JavaScript / Node.js / C++ |
-| 핵심 기술 | Unity EditorWindow, BLE, MediaPipe, JSON, UDP·TCP, Node.js·Express, ODBC·Database |
+| 핵심 기술 | Unity EditorWindow, Photon, BLE, MediaPipe, JSON, UDP·TCP, Node.js·Express, ODBC·Database |
 | 직접 구현·재구성 | BPM 채보 제작·인게임 스폰, BLE 검색·연결·구독·재연결 및 6개 입력 시각화, 관절 좌표 가공·스케일 조정·UDP 전달, Unity–서버 API 연동 |
 
 [![인터랙티브 코드맵](assets/navigation/code-map-link.svg)](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/)
@@ -23,6 +23,7 @@
 - [BPM·Offset 기반 채보 제작 도구](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/#case=bpm-chart)
 - [BLE 연결·입력 진단 흐름](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/#case=ble-diagnostics)
 - [MediaPipe 실행 환경과 이중 데이터 전달](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/#case=mediapipe-bridge)
+- [Photon 기반 1대1 리듬 게임](https://sj97p.github.io/Interactive-Game-Systems-CodeMap/#case=photon-rhythm)
 
 </details>
 

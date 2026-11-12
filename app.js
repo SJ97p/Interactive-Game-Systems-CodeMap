@@ -346,7 +346,32 @@ const nodes = {
   }
 };
 
+const photonNote = note("Photon 1대1 경쟁 플레이", "구현 범위 설명", `Photon 예제 코드 기반 응용 구현
+
+경쟁 요소를 더하기 위해 실시간 1대1 매칭과 리듬 플레이를 연결했습니다.
+플레이 중 내 점수와 상대 점수를 표시하고 종료 후 결과를 연결했습니다.
+두 클라이언트에서 점수 표시가 서로 대응하는 실행 결과를 확인했습니다.
+
+아래 그래프는 사용자 흐름이며 실제 클래스 구성이나 패킷 순서가 아닙니다.
+원본 회사 코드·제품 화면은 공개하지 않습니다.
+SDK 종류, 세부 전송 방식과 정밀 시각 동기화는 단정하지 않습니다.`);
+nodes.photon = {
+  title: "Photon 1대1 리듬 게임", summary: "예제 기반 매칭·경쟁 플레이와 상대 점수 표시 연결",
+  intent: "혼자 기록을 쌓는 리듬 플레이에 다른 사용자와 점수를 겨루는 재미를 더하고자 했습니다.",
+  issue: "두 사용자가 함께 참여하고 상대의 결과를 확인할 수 있는 경쟁 플레이 흐름이 필요했습니다.",
+  final: "Photon 예제 코드를 바탕으로 실시간 1대1 매칭과 리듬 플레이를 직접 구현하고, 플레이 중 상대 점수와 종료 후 결과를 표시했습니다.",
+  next: "두 클라이언트의 점수가 서로 대응하는 실행 결과를 확인했습니다. 네트워크 라이브러리 자체 개발이나 측정하지 않은 지연 개선은 주장하지 않습니다.",
+  graph: graph(['P["Photon 1대1 매칭"] --> G["리듬 게임 플레이"]', 'G --> S["내 점수와 상대 점수"]', 'S --> R["종료 후 결과"]']),
+  links: { "Photon 1대1 매칭": "photon_match", "내 점수와 상대 점수": "photon_score", "종료 후 결과": "photon_result" }, notes: [photonNote]
+};
+nodes.photon_match = { title:"매칭과 플레이 연결",summary:"Photon 예제 기반 1대1 경쟁 플레이 구성",intent:"다른 사용자와 경쟁하는 환경이 필요했습니다.",issue:"네트워크 예제를 리듬 게임 흐름에 적용해야 했습니다.",final:"예제 코드를 활용해 1대1 매칭과 리듬 플레이 환경을 직접 구성했습니다.",next:"SDK 자체가 아닌 응용 구현을 담당했습니다.",graph:graph(['E["Photon 예제"] --> M["1대1 매칭"]','M --> G["리듬 플레이"]']),notes:[photonNote] };
+nodes.photon_score = { title:"플레이 중 상대 점수 표시",summary:"두 화면의 내 점수와 상대 점수 대응",intent:"플레이 중 경쟁 상황을 확인할 수 있어야 했습니다.",issue:"내 점수만으로는 상대와의 경쟁 상황을 알기 어려웠습니다.",final:"각 플레이 화면에 내 점수와 상대 점수를 표시했습니다.",next:"표시값 대응은 확인했으며 전송 방식과 지연 수치는 단정하지 않습니다.",graph:graph(['A["A의 점수"] --> B["B의 상대 점수 표시"]','C["B의 점수"] --> D["A의 상대 점수 표시"]']),notes:[photonNote] };
+nodes.photon_result = { title:"종료 후 결과 표시",summary:"개별 판정 기록과 두 플레이어의 최종 점수",intent:"종료 후 각자의 기록과 경쟁 결과를 확인해야 했습니다.",issue:"플레이 중 표시와 결과 화면을 연결해야 했습니다.",final:"개별 판정 기록과 내 점수·상대 점수를 결과 화면에 표시했습니다.",next:"양쪽 최종 점수의 대응을 확인했습니다. 랭킹 서비스나 서버 검증까지 구현했다는 의미는 아닙니다.",graph:graph(['E["플레이 종료"] --> S["내 점수와 상대 점수"]','E --> L["개별 판정 기록"]','S --> R["결과 화면"]','L --> R']),notes:[photonNote] };
+nodes.overview.graph += '\nR --> PVP["Photon 1대1 경쟁 플레이"]';
+nodes.overview.links["Photon 1대1 경쟁 플레이"]="photon";
+
 const treeGroups = [
+  { id:"photon", title:"Photon 1대1 리듬 게임", children:["photon_match","photon_score","photon_result"] },
   { id: "rhythm", title: "BPM 리듬 채보", children: ["rhythm_model", "rhythm_editor", "rhythm_runtime"] },
   { id: "ble", title: "BLE 장치 진단", children: ["ble_adapter", "ble_ui", "ble_input"] },
   { id: "pose", title: "MediaPipe 연동", children: ["pose_evaluation", "pose_transform", "pose_relay", "pose_unity"] },
@@ -398,6 +423,19 @@ const cases = {
     feedback: "MediaPipe의 관절 추론과 자세 분류 모델 학습은 제 구현 범위가 아닙니다. Unity 리깅은 검증용 프로토타입이었고, 최종 적용 여부를 성과로 주장하지 않습니다.",
     cta: "CodeMap · MediaPipe Landmark 이중 전달 구조 보기"
   }
+};
+
+cases["photon-rhythm"] = {
+  number:"04", nodeId:"photon", title:"Photon 기반 1대1 리듬 게임",
+  card:"리듬 플레이에 경쟁 요소를 더한 예제 기반 매칭·점수·결과 연동",
+  situation:"혼자 기록을 쌓는 리듬 게임에 다른 사용자와 점수를 겨루는 재미를 더하고자 했습니다.",
+  alternatives:"기존 리듬 플레이를 유지하면서 Photon 예제 코드를 멀티플레이의 기반으로 활용했습니다. 여러 SDK를 비교해 선정했다는 주장은 하지 않습니다.",
+  decision:"Photon 예제 코드를 바탕으로 실시간 1대1 매칭과 게임 플레이 환경을 직접 구현했습니다. 경쟁 상황을 확인할 수 있도록 내 점수와 상대 점수를 함께 표시했습니다.",
+  structure:["Photon 1대1 매칭","리듬 게임 플레이","내 점수·상대 점수 표시","종료 후 결과 확인"],
+  implementation:"플레이 중 상대 점수 표시와 종료 후 판정 기록·최종 점수 화면을 연결했습니다. 이 흐름은 기존 C++ 로그인·기록 서버 연동과 별개의 작업입니다.",
+  result:"두 클라이언트의 플레이 화면에서 내 점수와 상대 점수가 서로 대응했고, 결과 화면에서도 두 플레이어의 최종 점수가 서로 대응하는 모습을 확인했습니다.",
+  feedback:"회사명·실제 게임명·원본 코드와 제품 화면은 공개하지 않습니다. SDK 종류, RPC 방식, 정밀 시간 보정, 서버 권위 판정과 랭킹 서비스는 확인된 구현 범위로 단정하지 않습니다.",
+  cta:"CodeMap · Photon 1대1 매칭과 점수 표시 흐름 보기"
 };
 
 const expandedTreeGroups = new Set(treeGroups.map((group) => group.id));
@@ -529,13 +567,13 @@ function renderCaseDetail(item) {
   els.caseDetail.querySelector("[data-app-view='cases']").addEventListener("click", () => setAppView("cases"));
   els.caseDetail.querySelector("[data-case-node]").addEventListener("click", (event) => {
     const nodeId = event.currentTarget.dataset.caseNode;
-    setAppView("systems", { updateUrl: false });
+    setAppView("systems", { updateUrl: false, resetNode: false });
     navigate(nodeId, false);
     document.getElementById("graph-wrap").scrollIntoView({ behavior: "smooth", block: "start" });
   });
 }
 
-function setAppView(view, { updateUrl = true } = {}) {
+function setAppView(view, { updateUrl = true, resetNode = true } = {}) {
   const showCases = view === "cases";
   els.caseHub.hidden = !showCases;
   els.layout.hidden = showCases;
@@ -553,7 +591,7 @@ function setAppView(view, { updateUrl = true } = {}) {
   els.layout.classList.remove("case-mode");
   renderCaseDetail(null);
   if (updateUrl) setHash(view === "code" ? "code" : "systems");
-  if (view === "systems") navigate("overview", false, { preserveCase: true });
+  if (view === "systems" && resetNode) navigate("overview", false, { preserveCase: true });
 }
 
 function selectCase(id, { updateUrl = true } = {}) {
@@ -883,6 +921,6 @@ if (localStorage.getItem("portfolio-theme") === "dark") {
 setCodePanelWidth(Number(localStorage.getItem("portfolio-code-panel-width")) || 460);
 renderCaseCards();
 renderTree();
-navigate("overview", false, { preserveCase: true });
-openInitialView();
+if (window.location.hash.startsWith("#case=")) openInitialView();
+else navigate("overview", false, { preserveCase: true }).then(openInitialView);
 window.addEventListener("hashchange", openInitialView);
