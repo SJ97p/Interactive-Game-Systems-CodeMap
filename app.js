@@ -790,6 +790,10 @@ function renderNotes(node) {
     const docLink = document.createElement("a");
     docLink.className = "script-card";
     docLink.href = linkedCase ? `#case=${linkedCase}` : `https://github.com/SJ97p/Interactive-Game-Systems-CodeMap/blob/main/${node.doc}`;
+    if (linkedCase) docLink.addEventListener("click", (event) => {
+      event.preventDefault();
+      selectCase(linkedCase);
+    });
     if (!linkedCase) { docLink.target = "_blank"; docLink.rel = "noreferrer"; }
     docLink.innerHTML = `<strong>${linkedCase ? "사례와 결과 보기" : "서버 연동 상세 문서 ↗"}</strong><span>${linkedCase ? "배경부터 구현 결과까지" : "GitHub에서 문서 열기"}</span>`;
     els.scripts.appendChild(docLink);
