@@ -219,8 +219,20 @@ h3 { margin-bottom: 8px; font-size: 16px; color: var(--accent); }
 }
 .case-story-grid article { min-height: 168px; padding: 20px 22px; background: var(--panel); }
 .case-story-grid h3, .case-structure h3, .case-feedback h3 { margin-bottom: 9px; color: var(--accent); font-size: 14px; }
-.case-story-grid p, .case-feedback p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.68; }
-.case-decision { background: color-mix(in srgb, var(--accent) 7%, var(--panel)) !important; }
+.case-story-grid p, .case-feedback p { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.8; }
+
+.case-evidence { margin: 24px 0; }
+.case-evidence > p { color: var(--muted); line-height: 1.7; }
+.case-evidence-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.case-evidence figure { margin: 0; min-width: 0; }
+.case-evidence button { display: block; width: 100%; padding: 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--panel); color: var(--text); cursor: zoom-in; }
+.case-evidence button:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+.case-evidence img { display: block; width: 100%; height: auto; }
+.case-evidence button span { display: block; padding: 12px; font: inherit; }
+.case-evidence figcaption { padding-top: 12px; line-height: 1.75; }
+.case-evidence figcaption p { margin: 6px 0 0; color: var(--muted); }
+@media (max-width: 760px) { .case-evidence-grid { grid-template-columns: 1fr; } }
+.case-decision { grid-column: 1 / -1; background: color-mix(in srgb, var(--accent) 7%, var(--panel)) !important; }
 .case-result { background: color-mix(in srgb, var(--accent-2) 6%, var(--panel)) !important; }
 .case-structure, .case-feedback {
   padding: 20px 22px;
@@ -230,7 +242,7 @@ h3 { margin-bottom: 8px; font-size: 16px; color: var(--accent); }
 }
 .case-implementation { padding: 20px 22px; border: 1px solid var(--line); border-top: 0; background: var(--panel); }
 .case-implementation h3 { margin-bottom: 9px; color: var(--accent); font-size: 14px; }
-.case-implementation p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.68; }
+.case-implementation p { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.8; }
 .case-structure ol { display: flex; gap: 8px; flex-wrap: wrap; margin: 0; padding: 0; list-style: none; }
 .case-structure li {
   display: flex;

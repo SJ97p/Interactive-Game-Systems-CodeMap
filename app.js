@@ -71,7 +71,8 @@ Checks: camera compatibility, frame mode support, motion continuity,
         visual jitter, and landmark stability
 Decision: Web runtime selected after hands-on comparison
 
-통제된 벤치마크가 아니므로 수치상의 우위는 주장하지 않습니다.`),
+카메라 출력과 관절 오버레이를 보며 움직임의 연속성과 흔들림을 비교했습니다.
+환경별 지연 시간과 인식 정확도는 별도로 측정하지 않았습니다.`),
 
   serverFlow: note("서버 응용 계층 경계", "텍스트", `공개 아키텍처 요약
 
@@ -93,7 +94,7 @@ Unity client -> Open-source network API -> request dispatch
 - 공개 MediaPipe 및 리깅 예제
 - 오픈 소스 네트워크 API
 
-본인 구현으로 주장하지 않는 항목
+외부 기술 및 팀원 담당
 - 저수준 BLE 플러그인
 - 포즈 추론 모델
 - 포즈 분류기 학습 로직
@@ -107,7 +108,7 @@ const nodes = {
     intent: "공통 장치의 실제 타격 입력을 격투게임에서는 카메라 포즈와, 리듬게임에서는 음악의 노트 타이밍과 결합해야 했습니다.",
     issue: "연결 성공만으로는 센서 정상을 알 수 없었고, 포즈 전달 환경과 실시간 키 입력 녹화 시점에 의존한 리듬 채보도 각각 불안정했습니다.",
     final: "공통 BLE 진단 기반 위에 격투 판정과 리듬 플레이를 분기하고, 각 게임의 포즈 데이터와 BPM 제작 문제를 별도로 해결했습니다.",
-    next: "회사 원본과 제품 정보는 공개하지 않으며, 독립 데모와 일반화된 설계 설명만 제공합니다.",
+    next: "각 사례에서 담당 구현과 결과를 확인할 수 있습니다. 채보·BLE는 재구성한 데모로, Photon은 두 클라이언트 실행 화면으로 소개합니다.",
     graph: graph([
       'O["2열 × 3단 BLE 타격 장치"] --> B["연결·6개 입력 진단"]',
       'B --> F["격투게임 판정"]',
@@ -128,7 +129,7 @@ const nodes = {
     intent: "작업자마다 달라지는 노트 타이밍을 음악의 박자 체계에 맞추고 비개발자도 편집할 수 있어야 했습니다.",
     issue: "음악 재생 중 4개 레인 키 입력을 실시간 녹화하고 입력 시점을 절대 시간으로 저장해, 반응 시점에 따른 박자 오차가 생기고 수정 비용도 컸습니다.",
     final: "BPM·오프셋·레인 데이터를 중심으로 EditorWindow, 기록, 편집, JSON 입출력과 인게임 타이밍을 구현했습니다.",
-    next: "3명의 작업자가 같은 기준으로 제작했습니다. 측정하지 않은 시간 단축률이나 오차율은 주장하지 않습니다.",
+    next: "저를 포함한 3명의 작업자가 같은 박자 기준으로 채보를 제작했습니다. 제작 시간과 오차율의 정량 비교는 별도로 진행하지 않았습니다.",
     graph: graph([
       'A["절대 시간 기반 채보"] --> Q{"타이밍 정확도"}',
       'Q --> M["BPM + 오프셋 모델"]',
@@ -148,7 +149,7 @@ const nodes = {
     intent: "제작 화면과 인게임 재생이 동일한 음악적 기준을 사용해야 했습니다.",
     issue: "실시간 키 입력의 개별 float 시점만 저장하면 박자 의미가 사라지고, 기록 시점 자체가 편집 기준이 됩니다.",
     final: "초당 박자 길이와 오프셋을 기준으로 음악 위치와 노트 타이밍을 대응시켰습니다.",
-    next: "공개 데모에서는 beat index 중심 모델과 절대 시간 변환을 명확히 분리할 예정입니다.",
+    next: "공개 데모에서 BPM·Offset에 따라 노트의 박자 위치가 재생 시간으로 바뀌는 흐름을 확인할 수 있습니다.",
     graph: graph(['B["BPM"] --> T["Seconds per beat"]', 'O["Offset"] --> C["Beat clock"]', 'T --> C', 'C --> N["Note timing"]']),
     notes: [designNotes.rhythmModel]
   },
@@ -159,7 +160,7 @@ const nodes = {
     intent: "개발자가 아닌 작업자도 동일한 기준으로 채보를 만들 수 있어야 했습니다.",
     issue: "데이터와 장면 편집이 분리돼 있으면 반복 작업과 실수가 늘어납니다.",
     final: "곡 메타데이터, 활성 레인, 기록, 시각 편집과 JSON 내보내기를 한 흐름으로 묶었습니다.",
-    next: "회사 UI와 음원 대신 독립적인 공개 데모를 새로 제작합니다.",
+    next: "공개 데모는 원본 Unity 에디터와 구분되는 웹 예제로, 박자 기준의 편집 흐름을 재구성했습니다.",
     graph: graph(['S["Song metadata"] --> W["EditorWindow"]', 'R["Record input"] --> W', 'W --> V["Validate"]', 'V --> X["Export JSON"]']),
     notes: [designNotes.rhythmTool]
   },
@@ -170,7 +171,7 @@ const nodes = {
     intent: "에디터만 정확해도 런타임 출력이 다른 기준이면 박자 오차가 남습니다.",
     issue: "실시간 키 입력으로 기록한 절대 시간값이 그대로 스폰 기준이 됐습니다.",
     final: "BPM 단위의 음악 위치를 기준으로 노트가 출력되도록 런타임 방식을 변경했습니다.",
-    next: "실제 회사 채보 데이터는 공개하지 않고 생성된 테스트 패턴으로 검증할 예정입니다.",
+    next: "공개 데모는 테스트 패턴을 사용해 제작 기준과 재생 위치의 관계를 보여줍니다.",
     graph: graph(['J["Chart data"] --> C["Beat clock"]', 'C --> S["Scheduler"]', 'S --> L["Lane spawn"]']),
     notes: [designNotes.rhythmModel]
   },
@@ -181,7 +182,7 @@ const nodes = {
     intent: "현장에서 연결 실패와 센서 입력 문제를 빠르게 구분할 수 있어야 했습니다.",
     issue: "기존 연결 코드만으로는 장치 선택, 상태 확인, 재연결과 입력 진단 흐름이 부족했습니다.",
     final: "기존 모듈을 빌드 환경에 맞게 확장하고 검색·연결·상태 표시·입력 점등 UI를 구현했습니다.",
-    next: "실제 장치·플러그인·패킷은 제외하고 시뮬레이터로 공개 데모를 구성합니다.",
+    next: "가상 장치 데모에서 연결 상태와 여섯 채널의 입력 표시를 각각 확인할 수 있습니다.",
     graph: graph([
       'P["서드파티 BLE 플러그인"] --> A["수정한 연결 계층"]',
       'A --> L["장치 목록"]',
@@ -203,7 +204,7 @@ const nodes = {
     intent: "저수준 연결 성공만이 아니라 앱이 일관된 상태를 관찰하고 제어해야 했습니다.",
     issue: "기존 코드는 완성된 설정 화면과 재시도 흐름을 제공하지 않았습니다.",
     final: "장치 목록, 현재 장치, 연결 및 데이터 구독 상태를 UI가 소비할 수 있도록 확장했습니다.",
-    next: "저수준 플러그인과 기존 코드 전체를 직접 개발했다고 주장하지 않습니다.",
+    next: "기존 연결 모듈과 BLE 플러그인을 활용하고, 빌드 환경에 맞춘 수정과 진단 UI 연결을 담당했습니다.",
     graph: graph(['S["Scan"] --> D["Select device"]', 'D --> C["Connect"]', 'C --> R["Ready"]', 'R --> F["Safe refresh"]', 'F --> S']),
     notes: [designNotes.bleFlow, designNotes.bleBoundary]
   },
@@ -214,7 +215,7 @@ const nodes = {
     intent: "운영자가 기술 로그를 읽지 않고도 장치 상태를 이해해야 했습니다.",
     issue: "연결과 실제 센서 입력은 서로 다른 문제지만 기존 화면에서는 구분하기 어려웠습니다.",
     final: "장치 목록과 상태 색상, 연결 제어, 채널별 입력 점등을 시각적으로 구성했습니다.",
-    next: "원본 UI 스크린샷 대신 동일 기능의 독립 디자인을 제작합니다.",
+    next: "공개 데모에서는 독립적인 화면 구성으로 연결 상태와 채널별 입력을 구분해 보여줍니다.",
     graph: graph(['D["Device list"] --> S["State indicator"]', 'S --> T["Input test"]', 'T --> F["Channel feedback"]']),
     notes: [designNotes.bleFlow]
   },
@@ -236,7 +237,7 @@ const nodes = {
     intent: "카메라 움직임을 캐릭터 리깅과 자세 판정에서 사용할 수 있어야 했습니다.",
     issue: "환경마다 프레임 지원과 관절 추출 품질이 달랐고 Unity 전달 경로도 필요했습니다.",
     final: "여러 환경을 비교하고 Web 방식을 선택해 설정 UI, 좌표 가공, 로컬 중계와 Unity 연동을 구성했습니다.",
-    next: "정량 벤치마크가 아니므로 환경 선택은 정성적 기술 검증으로 명시합니다.",
+    next: "카메라 호환성과 관절 출력의 연속성을 직접 비교해 Web 환경을 선택했습니다. 환경별 지연과 정확도는 별도로 수치화하지 않았습니다.",
     graph: graph([
       'E["실행 환경 비교"] --> W["Web 방식 선정"]',
       'W --> C["카메라 + 프레임 설정"]',
@@ -255,7 +256,7 @@ const nodes = {
     intent: "지원 프레임만으로는 실제 움직임 품질을 판단할 수 없었습니다.",
     issue: "한 환경은 높은 프레임으로 동작해도 관절 추출 안정성이 요구 수준에 미치지 못했습니다.",
     final: "호환성, 움직임 연속성, 시각적 떨림과 좌표 안정성을 확인해 Web 방식을 선택했습니다.",
-    next: "동일 조건의 수치 측정이 없어 성능 우위를 수치로 표현하지 않습니다.",
+    next: "움직임을 따라오는 관절 오버레이의 흔들림과 연속성을 보며 실행 환경을 비교했습니다.",
     graph: graph(['P["Python"] --> Q{"Qualitative checks"}', 'L["Linux"] --> Q', 'W["Web"] --> Q', 'Q --> D["Web selected"]']),
     notes: [designNotes.poseEvaluation]
   },
@@ -352,21 +353,21 @@ const photonNote = note("Photon 1대1 경쟁 플레이", "구현 범위 설명",
 플레이 중 내 점수와 상대 점수를 표시하고 종료 후 결과를 연결했습니다.
 두 클라이언트에서 점수 표시가 서로 대응하는 실행 결과를 확인했습니다.
 
-아래 그래프는 사용자 흐름이며 실제 클래스 구성이나 패킷 순서가 아닙니다.
-원본 회사 코드·제품 화면은 공개하지 않습니다.
-SDK 종류, 세부 전송 방식과 정밀 시각 동기화는 단정하지 않습니다.`);
+그래프는 매칭부터 결과 확인까지의 사용자 흐름을 정리한 것입니다.
+실행 화면에서는 양쪽 점수 표시를 확인할 수 있습니다.
+회사 원본 코드 대신 담당 구현 흐름과 실행 결과를 소개합니다.`);
 nodes.photon = {
   title: "Photon 1대1 리듬 게임", summary: "예제 기반 매칭·경쟁 플레이와 상대 점수 표시 연결",
   intent: "혼자 기록을 쌓는 리듬 플레이에 다른 사용자와 점수를 겨루는 재미를 더하고자 했습니다.",
   issue: "두 사용자가 함께 참여하고 상대의 결과를 확인할 수 있는 경쟁 플레이 흐름이 필요했습니다.",
   final: "Photon 예제 코드를 바탕으로 실시간 1대1 매칭과 리듬 플레이를 직접 구현하고, 플레이 중 상대 점수와 종료 후 결과를 표시했습니다.",
-  next: "두 클라이언트의 점수가 서로 대응하는 실행 결과를 확인했습니다. 네트워크 라이브러리 자체 개발이나 측정하지 않은 지연 개선은 주장하지 않습니다.",
+  next: "두 클라이언트에서 내 점수와 상대 점수가 서로 대응하는 것을 확인했습니다. 실행 화면은 사례 페이지에서 확대해 볼 수 있습니다.",
   graph: graph(['P["Photon 1대1 매칭"] --> G["리듬 게임 플레이"]', 'G --> S["내 점수와 상대 점수"]', 'S --> R["종료 후 결과"]']),
   links: { "Photon 1대1 매칭": "photon_match", "내 점수와 상대 점수": "photon_score", "종료 후 결과": "photon_result" }, notes: [photonNote]
 };
 nodes.photon_match = { title:"매칭과 플레이 연결",summary:"Photon 예제 기반 1대1 경쟁 플레이 구성",intent:"다른 사용자와 경쟁하는 환경이 필요했습니다.",issue:"네트워크 예제를 리듬 게임 흐름에 적용해야 했습니다.",final:"예제 코드를 활용해 1대1 매칭과 리듬 플레이 환경을 직접 구성했습니다.",next:"SDK 자체가 아닌 응용 구현을 담당했습니다.",graph:graph(['E["Photon 예제"] --> M["1대1 매칭"]','M --> G["리듬 플레이"]']),notes:[photonNote] };
-nodes.photon_score = { title:"플레이 중 상대 점수 표시",summary:"두 화면의 내 점수와 상대 점수 대응",intent:"플레이 중 경쟁 상황을 확인할 수 있어야 했습니다.",issue:"내 점수만으로는 상대와의 경쟁 상황을 알기 어려웠습니다.",final:"각 플레이 화면에 내 점수와 상대 점수를 표시했습니다.",next:"표시값 대응은 확인했으며 전송 방식과 지연 수치는 단정하지 않습니다.",graph:graph(['A["A의 점수"] --> B["B의 상대 점수 표시"]','C["B의 점수"] --> D["A의 상대 점수 표시"]']),notes:[photonNote] };
-nodes.photon_result = { title:"종료 후 결과 표시",summary:"개별 판정 기록과 두 플레이어의 최종 점수",intent:"종료 후 각자의 기록과 경쟁 결과를 확인해야 했습니다.",issue:"플레이 중 표시와 결과 화면을 연결해야 했습니다.",final:"개별 판정 기록과 내 점수·상대 점수를 결과 화면에 표시했습니다.",next:"양쪽 최종 점수의 대응을 확인했습니다. 랭킹 서비스나 서버 검증까지 구현했다는 의미는 아닙니다.",graph:graph(['E["플레이 종료"] --> S["내 점수와 상대 점수"]','E --> L["개별 판정 기록"]','S --> R["결과 화면"]','L --> R']),notes:[photonNote] };
+nodes.photon_score = { title:"플레이 중 상대 점수 표시",summary:"두 화면의 내 점수와 상대 점수 대응",intent:"플레이 중 경쟁 상황을 확인할 수 있어야 했습니다.",issue:"내 점수만으로는 상대와의 경쟁 상황을 알기 어려웠습니다.",final:"각 플레이 화면에 내 점수와 상대 점수를 표시했습니다.",next:"플레이 화면에서 한쪽의 내 점수 1,292점이 다른 쪽의 상대 점수에, 반대쪽의 216점도 같은 방식으로 표시됩니다.",graph:graph(['A["A의 점수"] --> B["B의 상대 점수 표시"]','C["B의 점수"] --> D["A의 상대 점수 표시"]']),notes:[photonNote] };
+nodes.photon_result = { title:"종료 후 결과 표시",summary:"개별 판정 기록과 두 플레이어의 최종 점수",intent:"종료 후 각자의 기록과 경쟁 결과를 확인해야 했습니다.",issue:"플레이 중 표시와 결과 화면을 연결해야 했습니다.",final:"개별 판정 기록과 내 점수·상대 점수를 결과 화면에 표시했습니다.",next:"결과 화면에서 2,133점과 5,169점이 양쪽의 내 점수·상대 점수에 각각 대응하는 것을 확인했습니다.",graph:graph(['E["플레이 종료"] --> S["내 점수와 상대 점수"]','E --> L["개별 판정 기록"]','S --> R["결과 화면"]','L --> R']),notes:[photonNote] };
 nodes.overview.graph += '\nR --> PVP["Photon 1대1 경쟁 플레이"]';
 nodes.overview.links["Photon 1대1 경쟁 플레이"]="photon";
 
@@ -390,7 +391,7 @@ const cases = {
     structure: ["곡 메타데이터", "BPM·Offset·Beat Clock", "EditorWindow 기록·편집", "Chart JSON", "인게임 노트 스폰"],
     implementation: "EditorWindow가 BPM·Offset·Beat와 레인 데이터를 JSON으로 저장하고, 런타임 스폰은 같은 Clock으로 Beat를 재생 시간에 맞춥니다. 제작 도구와 인게임이 별도의 시간 기준을 갖지 않도록 했습니다.",
     result: "팀원이 도구를 사용하며 스크롤 이동, BPM 단위 이동, 노트 동기화에서 찾은 문제를 수정했습니다. 제작과 인게임 실행이 같은 박자 기준을 사용하도록 맞췄고, 노트가 판정 지점의 박자에 맞게 들어오는 것을 플레이로 확인했습니다.",
-    feedback: "정확도나 제작 시간은 측정하지 않았습니다. 다만 실제 사용 과정에서 드러난 편집·동기화 문제를 다시 도구에 반영한 점이 이 사례의 검증 근거입니다.",
+    feedback: "동료는 노트를 박자 단위로 옮길 수 있어 작업이 수월하고 결과도 일정하게 나온다고 평가했습니다. 사용 중 발견한 문제를 수정하며 작업 흐름을 다듬었으며, 제작 시간과 오차율은 별도로 측정하지 않았습니다.",
     demo: "demos/index.html#rhythm-demo",
     cta: "CodeMap · BPM·Offset·Beat 채보 구조와 공개 설계 보기"
   },
@@ -405,7 +406,7 @@ const cases = {
     structure: ["장치 검색", "장치 선택", "연결·구독 상태", "Ready", "6개 입력 채널 시각화"],
     implementation: "BLE 연결 상태와 입력 이벤트를 별도 표시 경로로 두고, 재검색·재연결과 2열×3단 채널 점등을 진단 화면에서 처리했습니다. 공개 페이지에는 동일한 흐름을 재현한 가상 장치 데모를 사용했습니다.",
     result: "연결 상태와 입력 채널을 분리해 보면서, 실기기 문제가 연결 단계인지 센서 입력 단계인지 플레이 진입 전에 좁힐 수 있게 했습니다.",
-    feedback: "원본 장치 UI와 저수준 BLE 플러그인은 공개 대상이 아닙니다. 이 CodeMap의 데모는 실제 통신을 흉내 낸 가상 장치 화면이며, 공개 가능한 진단 흐름만 재구성했습니다.",
+    feedback: "아래 데모는 진단 화면의 동작을 재구성한 가상 장치 화면입니다. 실제 BLE 연결 테스트와 구분해서 볼 수 있도록 검색·연결·채널 입력 흐름을 담았습니다.",
     demo: "demos/index.html#ble-demo",
     cta: "CodeMap · BLE 연결 상태와 6채널 진단 흐름 보기"
   },
@@ -420,7 +421,7 @@ const cases = {
     structure: ["카메라", "MediaPipe Web", "Landmark 가공·스케일", "Unity 리깅", "Python 자세 판정", "BLE 타격과 최종 판정"],
     implementation: "Web에서 얻은 Landmark를 Unity 소비 좌표로 가공한 뒤 UDP 포트 두 개로 전달했습니다. 하나는 Unity 리깅 검증용, 다른 하나는 팀원이 만든 Python 자세 판정 모듈의 입력용입니다.",
     result: "두 수신처가 필요한 데이터를 각각 받을 수 있는 브리지 경로를 구성했습니다. 발차기 자세 판정과 실제 타격 신호가 모두 들어와야 공격이 성립하도록 게임 판정에 연결했습니다.",
-    feedback: "MediaPipe의 관절 추론과 자세 분류 모델 학습은 제 구현 범위가 아닙니다. Unity 리깅은 검증용 프로토타입이었고, 최종 적용 여부를 성과로 주장하지 않습니다.",
+    feedback: "관절 추론에는 MediaPipe를 활용했고, 자세 분류 모델 학습은 팀원이 담당했습니다. 저는 실행 환경 비교와 데이터 전달을 맡았으며, Unity 리깅 경로는 검증용 프로토타입으로 구성했습니다.",
     cta: "CodeMap · MediaPipe Landmark 이중 전달 구조 보기"
   }
 };
@@ -429,12 +430,17 @@ cases["photon-rhythm"] = {
   number:"04", nodeId:"photon", title:"Photon 기반 1대1 리듬 게임",
   card:"리듬 플레이에 경쟁 요소를 더한 예제 기반 매칭·점수·결과 연동",
   situation:"혼자 기록을 쌓는 리듬 게임에 다른 사용자와 점수를 겨루는 재미를 더하고자 했습니다.",
-  alternatives:"기존 리듬 플레이를 유지하면서 Photon 예제 코드를 멀티플레이의 기반으로 활용했습니다. 여러 SDK를 비교해 선정했다는 주장은 하지 않습니다.",
+  alternatives:"기존 리듬 플레이에 1대1 경쟁을 더하기 위해 Photon 예제의 매칭 흐름을 활용하고, 게임 진행과 점수 표시를 연결하는 방향으로 잡았습니다.",
+  alternativesLabel:"구현 방향",
   decision:"Photon 예제 코드를 바탕으로 실시간 1대1 매칭과 게임 플레이 환경을 직접 구현했습니다. 경쟁 상황을 확인할 수 있도록 내 점수와 상대 점수를 함께 표시했습니다.",
   structure:["Photon 1대1 매칭","리듬 게임 플레이","내 점수·상대 점수 표시","종료 후 결과 확인"],
   implementation:"플레이 중 상대 점수 표시와 종료 후 판정 기록·최종 점수 화면을 연결했습니다. 이 흐름은 기존 C++ 로그인·기록 서버 연동과 별개의 작업입니다.",
   result:"두 클라이언트의 플레이 화면에서 내 점수와 상대 점수가 서로 대응했고, 결과 화면에서도 두 플레이어의 최종 점수가 서로 대응하는 모습을 확인했습니다.",
-  feedback:"회사명·실제 게임명·원본 코드와 제품 화면은 공개하지 않습니다. SDK 종류, RPC 방식, 정밀 시간 보정, 서버 권위 판정과 랭킹 서비스는 확인된 구현 범위로 단정하지 않습니다.",
+  feedback:"예제를 게임에 맞게 연결해 매칭부터 점수 비교와 결과 확인까지 구성한 사례입니다. 아래 화면은 두 클라이언트의 점수 표시를 보여주며, 정밀한 시간 동기화나 네트워크 지연을 측정한 자료는 아닙니다.",
+  images:[
+    {src:"assets/evidence/photon-rhythm-play.png",alt:"두 클라이언트의 리듬 게임 플레이와 상호 점수 표시",title:"플레이 중 상대 점수 표시",caption:"왼쪽 내 점수 1,292점 ↔ 오른쪽 상대 점수 1,292점. 반대쪽 216점도 서로 대응합니다."},
+    {src:"assets/evidence/photon-rhythm-result.png",alt:"두 클라이언트의 판정 기록과 최종 점수 비교",title:"종료 후 결과 확인",caption:"최종 점수 2,133점과 5,169점이 각 화면의 내 점수·상대 점수에 대응합니다."}
+  ],
   cta:"CodeMap · Photon 1대1 매칭과 점수 표시 흐름 보기"
 };
 
@@ -555,16 +561,26 @@ function renderCaseDetail(item) {
     </div>
     <div class="case-story-grid">
       <article><h3>상황</h3><p>${escapeHtml(item.situation)}</p></article>
-      <article><h3>검토한 방식</h3><p>${escapeHtml(item.alternatives)}</p></article>
+      <article><h3>${escapeHtml(item.alternativesLabel || "검토한 방식")}</h3><p>${escapeHtml(item.alternatives)}</p></article>
       <article class="case-decision"><h3>선택한 방식</h3><p>${escapeHtml(item.decision)}</p></article>
     </div>
     <section class="case-structure"><h3>구조·구현 흐름</h3><ol>${structure}</ol></section>
     <section class="case-implementation"><h3>구현과 근거</h3><p>${escapeHtml(item.implementation)}</p></section>
     <section class="case-feedback case-result-panel"><h3>확인한 결과</h3><p>${escapeHtml(item.result)}</p></section>
-    <section class="case-feedback"><h3>공개 경계와 자체 피드백</h3><p>${escapeHtml(item.feedback)}</p></section>
+    ${item.images ? `<section class="case-evidence"><h3>실행 화면</h3><p>화면을 누르면 확대할 수 있습니다. 상단 창 제목줄만 제외한 원본 화면입니다.</p><div class="case-evidence-grid">${item.images.map((media, index) => `<figure><button type="button" data-case-image="${index}" aria-label="${escapeHtml(media.title)} 확대"><img src="${escapeHtml(media.src)}" alt="${escapeHtml(media.alt)}" loading="lazy"><span>확대해서 보기 ↗</span></button><figcaption><strong>${escapeHtml(media.title)}</strong><p>${escapeHtml(media.caption)}</p></figcaption></figure>`).join("")}</div></section>` : ""}
+    <section class="case-feedback"><h3>확인 범위와 돌아본 점</h3><p>${escapeHtml(item.feedback)}</p></section>
     <div class="case-actions">${links}</div>`;
 
   els.caseDetail.querySelector("[data-app-view='cases']").addEventListener("click", () => setAppView("cases"));
+  els.caseDetail.querySelectorAll("[data-case-image]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const media = item.images[Number(button.dataset.caseImage)];
+      els.modalImage.src = media.src;
+      els.modalImage.alt = media.alt;
+      els.modalCaption.textContent = media.caption;
+      els.modal.showModal();
+    });
+  });
   els.caseDetail.querySelector("[data-case-node]").addEventListener("click", (event) => {
     const nodeId = event.currentTarget.dataset.caseNode;
     setAppView("systems", { updateUrl: false, resetNode: false });
@@ -770,10 +786,12 @@ function renderNotes(node) {
   currentNotes = node.notes || [];
 
   if (node.doc) {
+    const linkedCase = {rhythm:"bpm-chart",ble:"ble-diagnostics",pose:"mediapipe-bridge"}[currentNodeId];
     const docLink = document.createElement("a");
     docLink.className = "script-card";
-    docLink.href = node.doc;
-    docLink.innerHTML = `<strong>사례 연구 문서</strong><span>${node.doc}</span>`;
+    docLink.href = linkedCase ? `#case=${linkedCase}` : `https://github.com/SJ97p/Interactive-Game-Systems-CodeMap/blob/main/${node.doc}`;
+    if (!linkedCase) { docLink.target = "_blank"; docLink.rel = "noreferrer"; }
+    docLink.innerHTML = `<strong>${linkedCase ? "사례와 결과 보기" : "서버 연동 상세 문서 ↗"}</strong><span>${linkedCase ? "배경부터 구현 결과까지" : "GitHub에서 문서 열기"}</span>`;
     els.scripts.appendChild(docLink);
   }
 
